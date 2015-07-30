@@ -76,6 +76,7 @@ if [[ -z $region ]]; then
   region="us-east-1"
 fi
 
+# edX has reservations for sandboxes in this zone, don't change without updating reservations.
 if [[ -z $zone ]]; then
   zone="us-east-1c"
 fi
@@ -98,11 +99,11 @@ fi
 
 if [[ -z $ami ]]; then
   if [[ $server_type == "full_edx_installation" ]]; then
-    ami="ami-b1d92ada"
+    ami="ami-bdea3bd6"
   elif [[ $server_type == "ubuntu_12.04" || $server_type == "full_edx_installation_from_scratch" ]]; then
-    ami="ami-b92bdfd2"
+    ami="ami-93fb34f8"
   elif [[ $server_type == "ubuntu_14.04(experimental)" ]]; then
-    ami="ami-3b6a8050"
+    ami="ami-c135f3aa"
   fi
 fi
 
@@ -173,9 +174,9 @@ if [[ $edx_internal == "true" ]]; then
     # user and set edx_internal to True so that
     # xserver is installed
     cat << EOF >> $extra_vars_file
-EDXAPP_PREVIEW_LMS_BASE: preview.${deploy_host}
+EDXAPP_PREVIEW_LMS_BASE: preview-${deploy_host}
 EDXAPP_LMS_BASE: ${deploy_host}
-EDXAPP_CMS_BASE: studio.${deploy_host}
+EDXAPP_CMS_BASE: studio-${deploy_host}
 EDXAPP_SITE_NAME: ${deploy_host}
 CERTS_DOWNLOAD_URL: "http://${deploy_host}:18090"
 CERTS_VERIFY_URL: "http://${deploy_host}:18090"
