@@ -510,6 +510,15 @@ EDXAPP_XBLOCK_SETTINGS: {}
 # the value is the 32-character key.
 EDXAPP_CREDIT_PROVIDER_SECRET_KEYS: {}
 
+# Proctoring configuration (redirct URLs and keys shared between systems)
+EDXAPP_PROCTORING_SETTINGS: {}
+EDXAPP_PROCTORING_BACKEND_PROVIDER:
+  class: 'edx_proctoring.backends.null.NullBackendProvider'
+  options: {}
+
+# Comprehensive Theming
+EDXAPP_COMP_THEME_DIR: ""
+
 #-------- Everything below this line is internal to the role ------------
 
 #Use YAML references (& and *) and hash merge <<: to factor out shared settings
@@ -687,7 +696,7 @@ generic_env_config:  &edxapp_generic_env
   CROSS_DOMAIN_CSRF_COOKIE_NAME: "{{ EDXAPP_CROSS_DOMAIN_CSRF_COOKIE_NAME }}"
   VIDEO_UPLOAD_PIPELINE: "{{ EDXAPP_VIDEO_UPLOAD_PIPELINE }}"
   DEPRECATED_ADVANCED_COMPONENT_TYPES: "{{ EDXAPP_DEPRECATED_ADVANCED_COMPONENT_TYPES }}"
-  OAUTH_OIDC_ISSUER: "https://{{ EDXAPP_LMS_BASE }}/oauth2"
+  OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_LMS_BASE }}/oauth2"
   XBLOCK_FS_STORAGE_BUCKET: "{{ EDXAPP_XBLOCK_FS_STORAGE_BUCKET }}"
   XBLOCK_FS_STORAGE_PREFIX: "{{ EDXAPP_XBLOCK_FS_STORAGE_PREFIX }}"
   ANALYTICS_DATA_URL: "{{ EDXAPP_ANALYTICS_DATA_URL }}"
@@ -725,7 +734,7 @@ generic_env_config:  &edxapp_generic_env
   WIKI_ENABLED: true
   SYSLOG_SERVER:  "{{ EDXAPP_SYSLOG_SERVER }}"
   LOG_DIR:  "{{ COMMON_DATA_DIR }}/logs/edx"
-  JWT_ISSUER: "https://{{ EDXAPP_LMS_BASE }}/oauth2"
+  JWT_ISSUER: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_LMS_BASE }}/oauth2"
   JWT_EXPIRATION: '{{ EDXAPP_JWT_EXPIRATION }}'
 
   #must end in slash (https://docs.djangoproject.com/en/1.4/ref/settings/#media-url)
@@ -803,6 +812,7 @@ generic_env_config:  &edxapp_generic_env
   REGISTRATION_EXTRA_FIELDS: "{{ EDXAPP_REGISTRATION_EXTRA_FIELDS }}"
   XBLOCK_SETTINGS: "{{ EDXAPP_XBLOCK_SETTINGS }}"
   EDXMKTG_USER_INFO_COOKIE_NAME: "{{ EDXAPP_EDXMKTG_USER_INFO_COOKIE_NAME }}"
+  COMP_THEME_DIR: "{{ EDXAPP_COMP_THEME_DIR }}"
 
 lms_auth_config:
   <<: *edxapp_generic_auth
@@ -840,6 +850,7 @@ lms_auth_config:
               OPTIONS:
                 data_dir: "{{ edxapp_course_data_dir }}"
                 default_class: 'xmodule.hidden_module.HiddenDescriptor'
+  PROCTORING_BACKEND_PROVIDER: "{{ EDXAPP_PROCTORING_BACKEND_PROVIDER }}"
 
 
 lms_env_config:
@@ -868,6 +879,7 @@ lms_env_config:
   EDXNOTES_PUBLIC_API: "{{ EDXAPP_EDXNOTES_PUBLIC_API }}"
   EDXNOTES_INTERNAL_API: "{{ EDXAPP_EDXNOTES_INTERNAL_API }}"
   LTI_USER_EMAIL_DOMAIN: "{{ EDXAPP_LTI_USER_EMAIL_DOMAIN }}"
+  PROCTORING_SETTINGS: "{{ EDXAPP_PROCTORING_SETTINGS }}"
 
 cms_auth_config:
   <<: *edxapp_generic_auth
@@ -928,7 +940,7 @@ worker_core_mult:
   lms: 4
   cms: 2
 
-# Theming
+# Stanford-style Theming
 # Turn theming on and off with edxapp_use_custom_theme
 # Set theme name with edxapp_theme_name
 # Stanford, for example, uses edxapp_theme_name: 'stanford'
