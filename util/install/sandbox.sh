@@ -11,10 +11,10 @@
 ##
 ## Sanity check
 ##
-if [[ ! "$(lsb_release -d | cut -f2)" =~ $'Ubuntu 12.04' ]]; then
-   echo "This script is only known to work on Ubuntu 12.04, exiting...";
-   exit;
-fi
+# if [[ ! "$(lsb_release -d | cut -f2)" =~ $'Ubuntu 12.04' ]]; then
+#    echo "This script is only known to work on Ubuntu 12.04, exiting...";
+#    exit;
+# fi
 
 ##
 ## Update and Upgrade apt packages
@@ -25,9 +25,12 @@ sudo apt-get upgrade -y
 ##
 ## Install system pre-requisites
 ##
-sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev libxmlsec1-dev swig
+sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev libxmlsec1-dev swig htop
 sudo pip install --upgrade pip
 sudo -H pip install --upgrade virtualenv
+
+# https://github.com/edx/configuration/issues/2242
+sudo touch /etc/update-motd.d/51-cloudguest
 
 ## Did we specify an openedx release?
 if [ -n "$OPENEDX_RELEASE" ]; then
