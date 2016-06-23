@@ -31,9 +31,14 @@ sudo apt-get upgrade -y
 ##
 ## Install system pre-requisites
 ##
-sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev libxmlsec1-dev swig htopl ibfreetype6-dev gcc-4.8 g++-4.8
-sudo pip install --upgrade pip
-sudo -H pip install --upgrade virtualenv
+##sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev libxmlsec1-dev swig htopl ibfreetype6-dev gcc-4.8 g++-4.8
+##sudo pip install --upgrade pip
+##sudo -H pip install --upgrade virtualenv
+##=======
+sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc-4.8 g++-4.8 htop
+sudo pip install --upgrade pip==7.1.2
+sudo pip install --upgrade setuptools==18.3.2
+sudo -H pip install --upgrade virtualenv==13.1.2
 
 # https://github.com/edx/configuration/issues/2242
 sudo touch /etc/update-motd.d/51-cloudguest

@@ -20,5 +20,5 @@
 # }
 
 dependencies:
+  - common
   - supervisor
-  - redis
